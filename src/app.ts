@@ -7,6 +7,7 @@ import { userRoutes } from "./modules/users/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { technicianRoutes } from "./modules/technician/technician.routes";
+import { categoriesRoutes } from "./modules/category/category.routes";
 
 const app: Application = express();
 app.use(
@@ -29,6 +30,7 @@ app.use("/api/auth", userRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/technician", technicianRoutes);
+app.use("/api/admin", categoriesRoutes);
 
 app.use(globalErrorHandler);
 
