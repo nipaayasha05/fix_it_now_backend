@@ -4,7 +4,6 @@ model Technician{
     technician User @relation(fields:[technicianId],references:[id],onDelete:Cascade)
     bio String?
     experience Int
-    hourlyRate Int
     location String
     skills String[]
     status TechnicianStatus @default(AVAILABLE)

@@ -23,6 +23,25 @@ const createTechnician = catchAsync(
   },
 );
 
+const updateTechnicianProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string;
+
+    const payload = req.body;
+
+    const updateTechnicianProfile =
+      await technicianService.updateTechnicianProfile(userId, payload);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Technician profile updated successfully",
+      data: updateTechnicianProfile,
+    });
+  },
+);
+
 export const technicianController = {
   createTechnician,
+  updateTechnicianProfile,
 };

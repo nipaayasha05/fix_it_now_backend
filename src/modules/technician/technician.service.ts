@@ -17,6 +17,25 @@ const createTechnician = async (payload: TechnicianPayload, userId: string) => {
   return result;
 };
 
+const updateTechnicianProfile = async (userId: string, payload: any) => {
+  const { bio, experience, location, skills, status } = payload;
+
+  const updateTechnicianProfile = await prisma.technician.update({
+    where: {
+      technicianId: userId,
+    },
+    data: {
+      bio,
+      experience,
+      location,
+      skills,
+      status,
+    },
+  });
+  return updateTechnicianProfile;
+};
+
 export const technicianService = {
   createTechnician,
+  updateTechnicianProfile,
 };
