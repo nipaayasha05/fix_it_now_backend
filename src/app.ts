@@ -5,6 +5,8 @@ import cors from "cors";
 import config from "./config";
 import { userRoutes } from "./modules/users/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { technicianRoutes } from "./modules/technician/technician.routes";
 
 const app: Application = express();
 app.use(
@@ -25,5 +27,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", userRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/api/technician", technicianRoutes);
+
+app.use(globalErrorHandler);
 
 export default app;

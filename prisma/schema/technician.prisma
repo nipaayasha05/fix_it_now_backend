@@ -1,0 +1,17 @@
+model Technician{
+    id String @id @default(uuid())
+    technicianId String @unique
+    technician User @relation(fields:[technicianId],references:[id],onDelete:Cascade)
+    bio String?
+    experience Int
+    hourlyRate Int
+    location String
+    skills String[]
+    status TechnicianStatus @default(AVAILABLE)
+    averageRating Decimal @default(0.0) @db.Decimal(2,1)
+    totalReviews Int @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@map("technicians")
+
+}

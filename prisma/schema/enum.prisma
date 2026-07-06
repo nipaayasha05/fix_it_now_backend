@@ -9,3 +9,8 @@ enum UserStatus{
     ACTIVE
     BANNED
 }
+
+enum TechnicianStatus{
+    AVAILABLE
+    UNAVAILABLE
+}

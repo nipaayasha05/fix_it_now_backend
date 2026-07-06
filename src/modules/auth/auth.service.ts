@@ -28,10 +28,8 @@ const loginUser = async (payload: ILoginUser) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    phone: user.phone,
+
     role: user.role,
-    status: user.status,
-    profileImage: user.profileImage,
   };
 
   const accessToken = jwtUtils.createToken(
@@ -78,10 +76,8 @@ const refreshToken = async (refreshToken: string) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    phone: user.phone,
+
     role: user.role,
-    status: user.status,
-    profileImage: user.profileImage,
   };
 
   const accessToken = jwtUtils.createToken(
