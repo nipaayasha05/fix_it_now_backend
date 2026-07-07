@@ -20,6 +20,27 @@ const createService = catchAsync(
   },
 );
 
+const updateService = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    const payload = req.body;
+
+    const updateService = await serviceService.updateService(
+      id as string,
+      payload,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Service updated successfully",
+      data: updateService,
+    });
+  },
+);
+
 export const serviceController = {
   createService,
+  updateService,
 };

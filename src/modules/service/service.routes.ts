@@ -7,6 +7,6 @@ const router = Router();
 
 router.post("/", auth(Role.TECHNICIAN), serviceController.createService);
 
-// router.put("/:id", auth(Role.TECHNICIAN), serviceController.updateService);
+router.patch("/:id", auth(Role.TECHNICIAN), serviceController.updateService);
 
 export const serviceRoutes = router;
