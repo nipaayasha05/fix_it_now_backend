@@ -9,4 +9,6 @@ router.post("/", auth(Role.CUSTOMER), bookingController.createBooking);
 
 router.get("/", auth(Role.CUSTOMER), bookingController.getMyAllBookings);
 
+router.get("/:id", auth(Role.CUSTOMER), bookingController.getBookingById);
+
 export const bookingRoutes = router;

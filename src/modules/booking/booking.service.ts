@@ -43,7 +43,23 @@ const getMyAllBookings = async (customerId: string) => {
   return result;
 };
 
+const getBookingById = async (id: string, customerId: string) => {
+  const result = await prisma.booking.findUniqueOrThrow({
+    where: {
+      id,
+      customerId: customerId,
+    },
+    include: {
+      service: true,
+      technician: true,
+      availability: true,
+    },
+  });
+  return result;
+};
+
 export const bookingService = {
   createService,
   getMyAllBookings,
+  getBookingById,
 };
