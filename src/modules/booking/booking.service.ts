@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { IBooking } from "./booking.interface";
 
-const createService = async (payload: IBooking, customerId: string) => {
+const createBooking = async (payload: IBooking, customerId: string) => {
   console.log(customerId);
 
   const user = await prisma.user.findUniqueOrThrow({
@@ -59,7 +59,7 @@ const getBookingById = async (id: string, customerId: string) => {
 };
 
 export const bookingService = {
-  createService,
+  createBooking,
   getMyAllBookings,
   getBookingById,
 };

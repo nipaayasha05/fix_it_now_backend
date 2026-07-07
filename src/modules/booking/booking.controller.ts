@@ -11,7 +11,7 @@ const createBooking = catchAsync(
     const id = req.user?.id;
     const payload = req.body;
 
-    const result = await bookingService.createService(payload, id as string);
+    const result = await bookingService.createBooking(payload, id as string);
 
     sendResponse(res, {
       success: true,

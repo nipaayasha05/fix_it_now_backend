@@ -12,6 +12,35 @@ const createAvailability = async (payload: AvailabilityPayload, id: string) => {
     },
   });
 
+  const isValidTime = (time: string) => {
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return timeRegex.test(time);
+  };
+
+  for (const slot of payload.slots) {
+    if (!isValidTime(slot.startTime)) {
+      throw new Error("Invalid start time");
+    }
+    if (!isValidTime(slot.endTime)) {
+      throw new Error("Invalid end time");
+    }
+    if (slot.startTime >= slot.endTime) {
+      throw new Error("Start time must be before end time");
+    }
+
+    const existingSlot = await prisma.availability.findFirst({
+      where: {
+        technicianId: technician.id,
+        day: slot.day,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+      },
+    });
+    if (existingSlot) {
+      throw new Error("Slot already exists");
+    }
+  }
+
   await prisma.availability.createMany({
     data: payload.slots.map((slot) => ({
       ...slot,

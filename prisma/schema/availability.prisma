@@ -5,14 +5,16 @@ model Availability{
     technician Technician @relation(fields:[technicianId],references:[id])
 
     day Day
-    startTime String
-    endTime String
+    startTime String // HH:mm
+    endTime String //  HH:mm
 
     booking Booking[]
 
     isAvailable Boolean @default(true)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@unique([technicianId,day,startTime,endTime])
 }
 
 
