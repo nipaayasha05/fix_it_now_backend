@@ -1,5 +1,8 @@
 import { prisma } from "../../lib/prisma";
-import { TechnicianPayload } from "./technician.interface";
+import {
+  TechnicianPayload,
+  TechnicianPayloadUpdate,
+} from "./technician.interface";
 
 const createTechnician = async (payload: TechnicianPayload, userId: string) => {
   const user = await prisma.user.findUniqueOrThrow({
@@ -20,7 +23,10 @@ const createTechnician = async (payload: TechnicianPayload, userId: string) => {
   return result;
 };
 
-const updateTechnicianProfile = async (userId: string, payload: any) => {
+const updateTechnicianProfile = async (
+  userId: string,
+  payload: TechnicianPayloadUpdate,
+) => {
   const { bio, experience, location, skills, status } = payload;
 
   const updateTechnicianProfile = await prisma.technician.update({

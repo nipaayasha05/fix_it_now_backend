@@ -1,0 +1,14 @@
+model Availability{
+    id String @id @default(uuid())
+
+    technicianId String
+    technician Technician @relation(fields:[technicianId],references:[id])
+
+    day Day
+    startTime String
+    endTime String
+
+    isAvailable Boolean @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

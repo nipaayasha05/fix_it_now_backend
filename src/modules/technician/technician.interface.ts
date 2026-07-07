@@ -10,3 +10,14 @@ export interface TechnicianPayload {
   averageRating: number;
   totalReviews: number;
 }
+
+export interface TechnicianPayloadUpdate {
+  bio?: string;
+  experience?: number;
+  hourlyRate?: number;
+  location?: string;
+  skills?: string[];
+  status?: TechnicianStatus;
+  averageRating?: number;
+  totalReviews?: number;
+}

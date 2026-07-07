@@ -14,3 +14,14 @@ enum TechnicianStatus{
     AVAILABLE
     UNAVAILABLE
 }
+
+
+enum Day{
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+}

@@ -3,7 +3,7 @@ model Service{
     title String
     description String?
     price Int
-    duration Int?
+    duration Int? // in minutes
     technicianId String
 
     technician Technician @relation(fields:[technicianId],references:[id])
