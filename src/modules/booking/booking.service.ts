@@ -58,8 +58,26 @@ const getBookingById = async (id: string, customerId: string) => {
   return result;
 };
 
+// const getTechnicianAllBookings = async (technicianId: string) => {
+//   const result = await prisma.booking.findMany({
+//     where: {
+//       technicianId,
+//     },
+//     orderBy: {
+//       createdAt: "desc",
+//     },
+//     include: {
+//       service: true,
+//       technician: true,
+//       availability: true,
+//     },
+//   });
+//   return result;
+// };
+
 export const bookingService = {
   createBooking,
   getMyAllBookings,
   getBookingById,
+  // getTechnicianAllBookings,
 };

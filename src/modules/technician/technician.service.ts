@@ -44,7 +44,45 @@ const updateTechnicianProfile = async (
   return updateTechnicianProfile;
 };
 
+const getAllTechnicians = async () => {
+  const technicians = await prisma.technician.findMany({
+    include: {
+      technician: true,
+      bookings: true,
+      availabilities: true,
+      services: true,
+    },
+  });
+  return technicians;
+};
+
+const getTechnicianAllBookings = async (id: string) => {
+  const technician = await prisma.technician.findUniqueOrThrow({
+    where: {
+      technicianId: id,
+    },
+  });
+
+  const result = await prisma.booking.findMany({
+    where: {
+      technicianId: technician.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      service: true,
+      technician: true,
+      availability: true,
+    },
+  });
+  console.log(result, "result getTechnicianAllBookings");
+  return result;
+};
+
 export const technicianService = {
   createTechnician,
   updateTechnicianProfile,
+  getTechnicianAllBookings,
+  getAllTechnicians,
 };

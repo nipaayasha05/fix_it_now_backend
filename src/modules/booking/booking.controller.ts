@@ -55,8 +55,24 @@ const getBookingById = catchAsync(
   },
 );
 
+// const getTechnicianAllBookings = catchAsync(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const id = req.user?.id;
+
+//     const result = await bookingService.getTechnicianAllBookings(id as string);
+
+//     sendResponse(res, {
+//       success: true,
+//       statusCode: httpStatus.OK,
+//       message: "Bookings retrieved successfully",
+//       data: result,
+//     });
+//   },
+// );
+
 export const bookingController = {
   createBooking,
   getMyAllBookings,
   getBookingById,
+  // getTechnicianAllBookings,
 };

@@ -41,6 +41,9 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/technician/availability", availabilityRoutes);
 
 app.use("/api/bookings", bookingRoutes);
+// app.use("/api/technician", bookingRoutes);
+
+app.use("/api/technicians", technicianRoutes);
 
 app.use(globalErrorHandler);
 
