@@ -13,6 +13,9 @@ const createTechnician = async (payload: TechnicianPayload, userId: string) => {
       ...payload,
       technicianId: user.id,
     },
+    include: {
+      technician: true,
+    },
   });
   return result;
 };
