@@ -10,6 +10,7 @@ import { technicianRoutes } from "./modules/technician/technician.routes";
 import { categoriesRoutes } from "./modules/category/category.routes";
 import { serviceRoutes } from "./modules/service/service.routes";
 import { availabilityRoutes } from "./modules/availability/availability.routes";
+import { bookingRoutes } from "./modules/booking/booking.routes";
 
 const app: Application = express();
 app.use(
@@ -38,6 +39,8 @@ app.use("/api/technician/services", serviceRoutes);
 app.use("/api/services", serviceRoutes);
 
 app.use("/api/technician/availability", availabilityRoutes);
+
+app.use("/api/bookings", bookingRoutes);
 
 app.use(globalErrorHandler);
 
