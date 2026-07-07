@@ -40,7 +40,21 @@ const updateService = catchAsync(
   },
 );
 
+const getAllServices = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await serviceService.getAllServices();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Services retrieved successfully",
+      data: result,
+    });
+  },
+);
+
 export const serviceController = {
   createService,
   updateService,
+  getAllServices,
 };

@@ -34,6 +34,7 @@ app.use("/api/technician", technicianRoutes);
 app.use("/api/admin", categoriesRoutes);
 
 app.use("/api/technician/services", serviceRoutes);
+app.use("/api/services", serviceRoutes);
 
 app.use(globalErrorHandler);
 

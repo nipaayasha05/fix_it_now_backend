@@ -34,7 +34,18 @@ const updateService = async (id: string, payload: IServiceUpdate) => {
   return result;
 };
 
+const getAllServices = async () => {
+  const services = await prisma.service.findMany({
+    include: {
+      technician: true,
+      category: true,
+    },
+  });
+  return services;
+};
+
 export const serviceService = {
   createService,
   updateService,
+  getAllServices,
 };
