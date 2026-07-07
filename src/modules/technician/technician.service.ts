@@ -2,7 +2,7 @@ import { prisma } from "../../lib/prisma";
 import { TechnicianPayload } from "./technician.interface";
 
 const createTechnician = async (payload: TechnicianPayload, userId: string) => {
-  const user = await prisma.user.findFirstOrThrow({
+  const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
     },

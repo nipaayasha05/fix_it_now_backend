@@ -8,6 +8,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { technicianRoutes } from "./modules/technician/technician.routes";
 import { categoriesRoutes } from "./modules/category/category.routes";
+import { serviceRoutes } from "./modules/service/service.routes";
 
 const app: Application = express();
 app.use(
@@ -31,6 +32,8 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/technician", technicianRoutes);
 app.use("/api/admin", categoriesRoutes);
+
+app.use("/api/technician/services", serviceRoutes);
 
 app.use(globalErrorHandler);
 

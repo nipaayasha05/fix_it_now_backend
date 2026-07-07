@@ -9,6 +9,9 @@ model Technician{
     status TechnicianStatus @default(AVAILABLE)
     averageRating Decimal @default(0.0) @db.Decimal(2,1)
     totalReviews Int @default(0)
+
+    services Service[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     @@map("technicians")
