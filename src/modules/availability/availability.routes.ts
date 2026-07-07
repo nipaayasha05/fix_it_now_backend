@@ -11,7 +11,7 @@ router.post(
   availabilityController.createAvailability,
 );
 
-router.patch(
+router.put(
   "/:id",
   auth(Role.TECHNICIAN),
   availabilityController.updateAvailability,

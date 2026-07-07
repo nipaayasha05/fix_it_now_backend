@@ -25,3 +25,12 @@ enum Day{
     SATURDAY
     SUNDAY
 }
+
+enum BookingStatus{
+  PENDING
+  ACCEPTED
+  DECLINED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}

@@ -34,6 +34,7 @@ const updateService = async (id: string, payload: IServiceUpdate) => {
   return result;
 };
 
+//publice route
 const getAllServices = async () => {
   const services = await prisma.service.findMany({
     include: {

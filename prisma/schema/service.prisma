@@ -6,6 +6,8 @@ model Service{
     duration Int? // in minutes
     technicianId String
 
+    bookings Booking[]
+
     technician Technician @relation(fields:[technicianId],references:[id])
     categoryId String
     category Category @relation(fields:[categoryId],references:[id])

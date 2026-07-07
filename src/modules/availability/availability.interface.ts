@@ -1,7 +1,10 @@
 import { Day } from "../../../prisma/generated/prisma/enums";
 
 export interface AvailabilityPayload {
-  technicianId: string;
+  slots: AvailabilitySlot[];
+}
+
+export interface AvailabilitySlot {
   day: Day;
   startTime: string;
   endTime: string;
