@@ -35,6 +35,7 @@ const getMyAllBookings = async (customerId: string) => {
       createdAt: "desc",
     },
     include: {
+      technician: true,
       service: true,
 
       availability: true,

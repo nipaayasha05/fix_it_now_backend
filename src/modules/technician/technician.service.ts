@@ -92,6 +92,7 @@ const getTechnicianById = async (id: string) => {
       bookings: true,
       availabilities: true,
       services: true,
+      reviews: true,
     },
   });
   return result;

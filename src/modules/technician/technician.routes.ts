@@ -15,13 +15,13 @@ router.put(
 
 router.get("/", technicianController.getAllTechnicians);
 
-router.get("/:id", technicianController.technicianById);
-
 router.get(
   "/bookings",
   auth(Role.TECHNICIAN),
   technicianController.getTechnicianAllBookings,
 );
+
+router.get("/:id", technicianController.technicianById);
 
 router.patch(
   "/bookings/:id",

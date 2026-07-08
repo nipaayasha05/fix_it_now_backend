@@ -11,6 +11,7 @@ import { categoriesRoutes } from "./modules/category/category.routes";
 import { serviceRoutes } from "./modules/service/service.routes";
 import { availabilityRoutes } from "./modules/availability/availability.routes";
 import { bookingRoutes } from "./modules/booking/booking.routes";
+import { reviewRoutes } from "./modules/review/review.routes";
 
 const app: Application = express();
 app.use(
@@ -46,6 +47,8 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/technicians", technicianRoutes);
 
 app.use("/api/admin", userRoutes);
+
+app.use("/api/reviews", reviewRoutes);
 
 app.use(globalErrorHandler);
 
