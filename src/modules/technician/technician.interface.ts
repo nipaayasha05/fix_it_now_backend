@@ -7,8 +7,8 @@ export interface TechnicianPayload {
   location: string;
   skills: string[];
   status: TechnicianStatus;
-  averageRating: number;
-  totalReviews: number;
+  // averageRating: number;
+  // totalReviews: number;
 }
 
 export interface TechnicianPayloadUpdate {
@@ -18,8 +18,8 @@ export interface TechnicianPayloadUpdate {
   location?: string;
   skills?: string[];
   status?: TechnicianStatus;
-  averageRating?: number;
-  totalReviews?: number;
+  // averageRating?: number;
+  // totalReviews?: number;
 }
 
 export interface TechnicianBookingStatusPayload {

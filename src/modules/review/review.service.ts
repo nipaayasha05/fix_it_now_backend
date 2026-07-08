@@ -39,6 +39,34 @@ const createReview = async (customerId: string, payload: IReview) => {
     },
   });
 
+  //   calcultae technician rating
+  const reviews = await prisma.review.findMany({
+    where: {
+      technicianId: booking.technicianId,
+    },
+    select: {
+      rating: true,
+    },
+  });
+
+  const totalReviews = reviews.length;
+  const averageRating = Number(
+    (
+      reviews.reduce((sum, review) => sum + Number(review.rating), 0) /
+      totalReviews
+    ).toFixed(1),
+  );
+  //   update technician rating
+  await prisma.technician.update({
+    where: {
+      id: booking.technicianId,
+    },
+    data: {
+      averageRating,
+      totalReviews,
+    },
+  });
+
   return result;
 };
 
