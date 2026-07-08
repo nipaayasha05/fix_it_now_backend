@@ -19,6 +19,34 @@ const registerUser = catchAsync(
   },
 );
 
+const getAllUsers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userService.getAllUsers();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Users fetched successfully",
+      data: result,
+    });
+  },
+);
+
+const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const myResult = await userService.getMe(req.user?.id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User fetched successfully",
+      data: myResult,
+    });
+  },
+);
+
 export const userController = {
   registerUser,
+  getAllUsers,
+  getMe,
 };

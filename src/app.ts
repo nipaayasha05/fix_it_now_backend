@@ -45,6 +45,8 @@ app.use("/api/bookings", bookingRoutes);
 
 app.use("/api/technicians", technicianRoutes);
 
+app.use("/api/admin", userRoutes);
+
 app.use(globalErrorHandler);
 
 export default app;
