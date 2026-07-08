@@ -15,10 +15,18 @@ router.put(
 
 router.get("/", technicianController.getAllTechnicians);
 
+router.get("/:id", technicianController.technicianById);
+
 router.get(
   "/bookings",
   auth(Role.TECHNICIAN),
   technicianController.getTechnicianAllBookings,
+);
+
+router.patch(
+  "/bookings/:id",
+  auth(Role.TECHNICIAN),
+  technicianController.updateTechnicianOwnBooking,
 );
 
 export const technicianRoutes = router;

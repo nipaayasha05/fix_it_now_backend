@@ -75,9 +75,50 @@ const getTechnicianAllBookings = catchAsync(
   },
 );
 
+const technicianById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    if (!id) {
+      throw new Error("Id is required");
+    }
+
+    const result = await technicianService.getTechnicianById(id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Technician retrieved successfully",
+      data: result,
+    });
+  },
+);
+
+const updateTechnicianOwnBooking = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.user?.id as string;
+    const payload = req.body;
+    const userId = req.params.id as string;
+
+    const result = await technicianService.updateStatusBooking(
+      id,
+      userId,
+      payload,
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Booking status updated successfully",
+      data: result,
+    });
+  },
+);
+
 export const technicianController = {
   createTechnician,
   updateTechnicianProfile,
   getTechnicianAllBookings,
   getAllTechnicians,
+  technicianById,
+  updateTechnicianOwnBooking,
 };

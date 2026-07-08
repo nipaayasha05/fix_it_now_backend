@@ -21,3 +21,7 @@ export interface TechnicianPayloadUpdate {
   averageRating?: number;
   totalReviews?: number;
 }
+
+export interface TechnicianBookingStatusPayload {
+  status?: TechnicianStatus;
+}

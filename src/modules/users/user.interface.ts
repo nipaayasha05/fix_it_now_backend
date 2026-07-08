@@ -9,3 +9,7 @@ export interface RegisterUserPayload {
   status: UserStatus;
   profileImage?: string | null;
 }
+
+export interface UpdateUserPayload {
+  status?: UserStatus;
+}
