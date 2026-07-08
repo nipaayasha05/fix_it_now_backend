@@ -33,7 +33,20 @@ const getAllCategories = catchAsync(
   },
 );
 
+const getAllCategoriesPublic = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await categoriesService.getAllCategoriesPublic();
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Categories retrieved successfully for public",
+      data: result,
+    });
+  },
+);
+
 export const categoriesController = {
   createCategory,
   getAllCategories,
+  getAllCategoriesPublic,
 };

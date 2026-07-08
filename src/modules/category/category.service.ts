@@ -13,7 +13,13 @@ const getAllCategories = async () => {
   return result;
 };
 
+const getAllCategoriesPublic = async () => {
+  const result = await prisma.category.findMany({});
+  return result;
+};
+
 export const categoriesService = {
   createCategory,
   getAllCategories,
+  getAllCategoriesPublic,
 };

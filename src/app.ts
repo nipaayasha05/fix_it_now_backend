@@ -39,6 +39,8 @@ app.use("/api/admin", categoriesRoutes);
 app.use("/api/technician/services", serviceRoutes);
 app.use("/api/services", serviceRoutes);
 
+app.use("/api/categories", categoriesRoutes);
+
 app.use("/api/technician/availability", availabilityRoutes);
 
 app.use("/api/bookings", bookingRoutes);

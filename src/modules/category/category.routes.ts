@@ -11,6 +11,8 @@ router.post(
   categoriesController.createCategory,
 );
 
+router.get("/", categoriesController.getAllCategoriesPublic);
+
 router.get(
   "/categories",
   auth(Role.ADMIN),
