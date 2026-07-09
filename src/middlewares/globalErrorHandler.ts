@@ -19,6 +19,6 @@ export const globalErrorHandler = (
     statusCode,
     name: errorName,
     message: errorMessage,
-    error: err.message,
+    path: req.originalUrl,
   });
 };

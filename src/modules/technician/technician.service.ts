@@ -1,4 +1,5 @@
 import { BookingStatus } from "../../../prisma/generated/prisma/enums";
+import { TechnicianWhereInput } from "../../../prisma/generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import APPError from "../../middlewares/appError";
 import {
@@ -48,8 +49,133 @@ const updateTechnicianProfile = async (
   return updateTechnicianProfile;
 };
 
-const getAllTechnicians = async () => {
+interface ITechnicianQuery {
+  searchTerm?: string;
+  title?: string;
+
+  category?: string;
+
+  price?: string;
+
+  minPrice?: string;
+
+  maxPrice?: string;
+
+  averageRating?: string;
+  status?: BookingStatus;
+
+  location?: string;
+  page?: string;
+  limit?: string;
+}
+
+const getAllTechnicians = async (query: ITechnicianQuery) => {
+  const andConditions: TechnicianWhereInput[] = [];
+
+  if (query.searchTerm) {
+    andConditions.push({
+      OR: [
+        {
+          technician: {
+            name: {
+              contains: query.searchTerm,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
+          location: {
+            contains: query.searchTerm,
+            mode: "insensitive",
+          },
+        },
+        {
+          services: {
+            some: {
+              category: {
+                name: {
+                  contains: query.searchTerm,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        },
+      ],
+    });
+  }
+
+  if (query.location) {
+    andConditions.push({
+      location: {
+        contains: query.location,
+        mode: "insensitive",
+      },
+    });
+  }
+  if (query.averageRating) {
+    andConditions.push({
+      averageRating: {
+        gte: Number(query.averageRating),
+      },
+    });
+  }
+
+  if (query.price) {
+    andConditions.push({
+      services: {
+        some: {
+          price: {
+            equals: Number(query.price),
+          },
+        },
+      },
+    });
+  }
+
+  if (query.minPrice) {
+    andConditions.push({
+      services: {
+        some: {
+          price: {
+            gte: Number(query.minPrice),
+          },
+        },
+      },
+    });
+  }
+
+  if (query.maxPrice) {
+    andConditions.push({
+      services: {
+        some: {
+          price: {
+            lte: Number(query.maxPrice),
+          },
+        },
+      },
+    });
+  }
+
+  if (query.category) {
+    andConditions.push({
+      services: {
+        some: {
+          category: {
+            name: {
+              contains: query.category,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+    });
+  }
+
   const technicians = await prisma.technician.findMany({
+    where: {
+      AND: andConditions,
+    },
     include: {
       technician: {
         select: {
@@ -67,6 +193,7 @@ const getAllTechnicians = async () => {
       bookings: true,
       availabilities: true,
       services: true,
+      reviews: true,
     },
   });
   return technicians;

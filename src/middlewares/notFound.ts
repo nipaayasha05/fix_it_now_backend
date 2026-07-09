@@ -6,6 +6,5 @@ export const notFound = (req: Request, res: Response) => {
     name: "NotFound",
     message: "Route not found",
     path: req.originalUrl,
-    date: Date(),
   });
 };

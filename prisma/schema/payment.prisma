@@ -9,7 +9,7 @@ model Payment{
 
     amount Int
 
-    stripeCustomerId String? @unique
+    stripeCustomerId String?
 
   transactionId String?
 

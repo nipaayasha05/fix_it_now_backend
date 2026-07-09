@@ -82,8 +82,8 @@ const createCheckoutSession = async (userId: string, bookingId: string) => {
       mode: "payment",
       customer: stripeCustomerId,
       payment_method_types: ["card"],
-      success_url: `${config.app_url}/api/payments/success=true`,
-      cancel_url: `${config.app_url}/api/payments/cancel=true`,
+      success_url: `${config.app_url}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${config.app_url}/payment-cancel`,
       metadata: {
         userId: user.id,
         bookingId,
