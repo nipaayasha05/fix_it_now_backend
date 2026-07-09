@@ -120,7 +120,43 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
   }
 };
 
+const getMyPayments = async (userId: string) => {
+  const result = await prisma.payment.findMany({
+    where: {
+      customerId: userId,
+    },
+    include: {
+      booking: true,
+      customer: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return result;
+};
+
+const getPaymentDetails = async (paymentId: string, userId: string) => {
+  const result = await prisma.payment.findUnique({
+    where: {
+      id: paymentId,
+      customerId: userId,
+    },
+    include: {
+      booking: true,
+      customer: true,
+    },
+  });
+
+  if (!result) {
+    throw new Error("Payment not found.");
+  }
+  return result;
+};
+
 export const paymentService = {
   createCheckoutSession,
   handleWebhook,
+  getMyPayments,
+  getPaymentDetails,
 };

@@ -45,7 +45,7 @@ const getMyAllBookings = async (customerId: string) => {
 };
 
 const getBookingById = async (id: string, customerId: string) => {
-  const result = await prisma.booking.findUniqueOrThrow({
+  const result = await prisma.booking.findUnique({
     where: {
       id,
       customerId: customerId,
@@ -56,6 +56,9 @@ const getBookingById = async (id: string, customerId: string) => {
       availability: true,
     },
   });
+  if (!result) {
+    throw new Error("Booking not found.");
+  }
   return result;
 };
 
