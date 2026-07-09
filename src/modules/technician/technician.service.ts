@@ -1,10 +1,12 @@
 import { BookingStatus } from "../../../prisma/generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
+import APPError from "../../middlewares/appError";
 import {
   TechnicianBookingStatusPayload,
   TechnicianPayload,
   TechnicianPayloadUpdate,
 } from "./technician.interface";
+import httpStatus from "http-status";
 
 const createTechnician = async (payload: TechnicianPayload, userId: string) => {
   const user = await prisma.user.findUniqueOrThrow({
@@ -49,7 +51,19 @@ const updateTechnicianProfile = async (
 const getAllTechnicians = async () => {
   const technicians = await prisma.technician.findMany({
     include: {
-      technician: true,
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          status: true,
+          profileImage: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
       bookings: true,
       availabilities: true,
       services: true,
@@ -83,18 +97,33 @@ const getTechnicianAllBookings = async (id: string) => {
 };
 
 const getTechnicianById = async (id: string) => {
-  const result = await prisma.technician.findUniqueOrThrow({
+  const result = await prisma.technician.findUnique({
     where: {
       id,
     },
     include: {
-      technician: true,
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          status: true,
+          profileImage: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
       bookings: true,
       availabilities: true,
       services: true,
       reviews: true,
     },
   });
+  if (!result) {
+    throw new APPError(httpStatus.NOT_FOUND, "Technician not found.");
+  }
   return result;
 };
 
@@ -118,7 +147,10 @@ const updateStatusBooking = async (
   });
 
   if (booking.technicianId !== technician.id) {
-    throw new Error("You can only update your own bookings");
+    throw new APPError(
+      httpStatus.BAD_REQUEST,
+      "You can only update your own bookings",
+    );
   }
 
   const result = await prisma.booking.update({

@@ -1,5 +1,7 @@
 import { prisma } from "../../lib/prisma";
+import APPError from "../../middlewares/appError";
 import { IBooking } from "./booking.interface";
+import httpStatus from "http-status";
 
 const createBooking = async (payload: IBooking, customerId: string) => {
   console.log(customerId);
@@ -57,7 +59,7 @@ const getBookingById = async (id: string, customerId: string) => {
     },
   });
   if (!result) {
-    throw new Error("Booking not found.");
+    throw new APPError(httpStatus.NOT_FOUND, "Booking not found.");
   }
   return result;
 };

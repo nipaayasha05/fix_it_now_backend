@@ -10,11 +10,11 @@ export const globalErrorHandler = (
 ) => {
   console.log(err);
 
-  let statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+  let statusCode = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
   let errorMessage = err.message || "Internal Server Error";
   let errorName = err.name || "Internal Server Error";
 
-  res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+  res.status(statusCode).json({
     success: false,
     statusCode,
     name: errorName,

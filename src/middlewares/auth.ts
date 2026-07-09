@@ -5,6 +5,8 @@ import { jwtUtils } from "../utils/jwt";
 import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
+import APPError from "./appError";
+import httpStatus from "http-status";
 
 declare global {
   namespace Express {
@@ -28,7 +30,10 @@ export const auth = (...requiredRoles: Role[]) => {
         : req.headers.authorization;
 
     if (!token) {
-      throw new Error("You are not loged in.log in first");
+      throw new APPError(
+        httpStatus.UNAUTHORIZED,
+        "You are not loged in.log in first",
+      );
     }
 
     const verifiedToken = jwtUtils.verifiedToken(
@@ -37,13 +42,16 @@ export const auth = (...requiredRoles: Role[]) => {
     );
 
     if (!verifiedToken) {
-      throw new Error("Token is not valid");
+      throw new APPError(httpStatus.UNAUTHORIZED, "Token is not valid");
     }
 
     const { email, name, id, role } = verifiedToken.data as JwtPayload;
 
     if (requiredRoles.length && !requiredRoles.includes(role)) {
-      throw new Error("You are not authorized to access this resource");
+      throw new APPError(
+        httpStatus.UNAUTHORIZED,
+        "You are not authorized to access this resource",
+      );
     }
 
     const user = await prisma.user.findUnique({
@@ -51,11 +59,11 @@ export const auth = (...requiredRoles: Role[]) => {
     });
 
     if (!user) {
-      throw new Error("User is not found");
+      throw new APPError(httpStatus.NOT_FOUND, "User is not found");
     }
 
     if (user.status === "BANNED") {
-      throw new Error("User acount is banned");
+      throw new APPError(httpStatus.UNAUTHORIZED, "User acount is banned");
     }
 
     req.user = {

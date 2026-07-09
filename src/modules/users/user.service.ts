@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { RegisterUserPayload, UpdateUserPayload } from "./user.interface";
 import { prisma } from "../../lib/prisma";
 import config from "../../config";
+import APPError from "../../middlewares/appError";
+import httpStatus from "http-status";
 
 const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   const { name, email, password, phone, role, status, profileImage } = payload;
@@ -13,7 +15,7 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   });
 
   if (isUserExist) {
-    throw new Error("User already exists");
+    throw new APPError(httpStatus.BAD_REQUEST, "User already exists");
   }
 
   const hashedPassword = await bcrypt.hash(
@@ -46,12 +48,16 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
 };
 
 const getAllUsers = async () => {
-  const users = await prisma.user.findMany({});
+  const users = await prisma.user.findMany({
+    omit: {
+      password: true,
+    },
+  });
   return users;
 };
 
 const getMe = async (userId: string) => {
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUnique({
     where: {
       id: userId,
     },
@@ -59,6 +65,9 @@ const getMe = async (userId: string) => {
       password: true,
     },
   });
+  if (!user) {
+    throw new APPError(httpStatus.NOT_FOUND, "User not found.");
+  }
   return user;
 };
 

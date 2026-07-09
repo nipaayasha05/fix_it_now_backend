@@ -1,8 +1,10 @@
 import { prisma } from "../../lib/prisma";
+import APPError from "../../middlewares/appError";
 import {
   AvailabilityPayload,
   AvailabilityPayloadUpdate,
 } from "./availability.interface";
+import httpStatus from "http-status";
 
 const createAvailability = async (payload: AvailabilityPayload, id: string) => {
   console.log(id);
@@ -19,13 +21,16 @@ const createAvailability = async (payload: AvailabilityPayload, id: string) => {
 
   for (const slot of payload.slots) {
     if (!isValidTime(slot.startTime)) {
-      throw new Error("Invalid start time");
+      throw new APPError(httpStatus.BAD_REQUEST, "Invalid start time");
     }
     if (!isValidTime(slot.endTime)) {
-      throw new Error("Invalid end time");
+      throw new APPError(httpStatus.BAD_REQUEST, "Invalid end time");
     }
     if (slot.startTime >= slot.endTime) {
-      throw new Error("Start time must be before end time");
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Start time must be before end time",
+      );
     }
 
     const existingSlot = await prisma.availability.findFirst({
@@ -37,7 +42,7 @@ const createAvailability = async (payload: AvailabilityPayload, id: string) => {
       },
     });
     if (existingSlot) {
-      throw new Error("Slot already exists");
+      throw new APPError(httpStatus.BAD_REQUEST, "Slot already exists");
     }
   }
 
@@ -75,7 +80,7 @@ const updateAvailability = async (
   });
 
   if (availability.technicianId !== technician.id) {
-    throw new Error("Not Authorized");
+    throw new APPError(httpStatus.UNAUTHORIZED, "Not Authorized");
   }
 
   const result = await prisma.availability.update({

@@ -5,7 +5,9 @@ import {
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
+import APPError from "../../middlewares/appError";
 import { handleCheckoutCompleted } from "./payment.utils";
+import httpStatus from "http-status";
 
 const createCheckoutSession = async (userId: string, bookingId: string) => {
   const transactionResult = await prisma.$transaction(async (tx) => {
@@ -38,7 +40,10 @@ const createCheckoutSession = async (userId: string, bookingId: string) => {
     });
 
     if (booking.customerId !== userId) {
-      throw new Error("Booking  id must match user id.");
+      throw new APPError(
+        httpStatus.UNAUTHORIZED,
+        "Booking  id must match user id.",
+      );
     }
 
     const existingPayment = await tx.payment.findUnique({
@@ -48,11 +53,17 @@ const createCheckoutSession = async (userId: string, bookingId: string) => {
     });
 
     if (existingPayment) {
-      throw new Error("Booking already has a payment.");
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Booking already has a payment.",
+      );
     }
 
     if (booking.status !== BookingStatus.ACCEPTED) {
-      throw new Error("Booking status must be set to accepted.");
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Booking status must be set to accepted.",
+      );
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -127,12 +138,25 @@ const getMyPayments = async (userId: string) => {
     },
     include: {
       booking: true,
-      customer: true,
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          status: true,
+          profileImage: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
     },
   });
+  console.log(result, "result getMyPayments");
   return result;
 };
 
@@ -144,12 +168,24 @@ const getPaymentDetails = async (paymentId: string, userId: string) => {
     },
     include: {
       booking: true,
-      customer: true,
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+          status: true,
+          profileImage: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
     },
   });
 
   if (!result) {
-    throw new Error("Payment not found.");
+    throw new APPError(httpStatus.NOT_FOUND, "Payment not found.");
   }
   return result;
 };

@@ -4,6 +4,8 @@ import { ILoginUser } from "./auth.interface";
 import { jwtUtils } from "../../utils/jwt";
 import config from "../../config";
 import { JwtPayload, SignOptions } from "jsonwebtoken";
+import APPError from "../../middlewares/appError";
+import httpStatus from "http-status";
 
 const loginUser = async (payload: ILoginUser) => {
   const { email, password } = payload;
@@ -15,13 +17,16 @@ const loginUser = async (payload: ILoginUser) => {
   });
 
   if (user.status === "BANNED") {
-    throw new Error("Your account is banned");
+    throw new APPError(httpStatus.UNAUTHORIZED, "Your account is banned");
   }
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
   if (!isPasswordMatched) {
-    throw new Error("Password password is incorrect");
+    throw new APPError(
+      httpStatus.UNAUTHORIZED,
+      "Password password is incorrect",
+    );
   }
 
   const jwtPayload = {
@@ -57,7 +62,7 @@ const refreshToken = async (refreshToken: string) => {
   );
 
   if (!verifiedRefreshToken) {
-    throw new Error("Refresh token is invalid");
+    throw new APPError(httpStatus.UNAUTHORIZED, "Refresh token is invalid");
   }
 
   const { id } = verifiedRefreshToken.data as JwtPayload;
@@ -69,7 +74,7 @@ const refreshToken = async (refreshToken: string) => {
   });
 
   if (user.status === "BANNED") {
-    throw new Error("Your account is banned");
+    throw new APPError(httpStatus.UNAUTHORIZED, "Your account is banned");
   }
 
   const jwtPayload = {

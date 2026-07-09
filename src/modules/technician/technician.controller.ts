@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/response";
 import httpStatus from "http-status";
 import { technicianService } from "./technician.service";
+import APPError from "../../middlewares/appError";
 
 const createTechnician = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -80,7 +81,7 @@ const technicianById = catchAsync(
     const id = req.params.id;
 
     if (!id) {
-      throw new Error("Id is required");
+      throw new APPError(httpStatus.BAD_REQUEST, "Id is required");
     }
 
     const result = await technicianService.getTechnicianById(id as string);

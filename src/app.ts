@@ -14,6 +14,7 @@ import { bookingRoutes } from "./modules/booking/booking.routes";
 import { reviewRoutes } from "./modules/review/review.routes";
 import { paymentRoutes } from "./modules/payment/payment.routes";
 import { stripe } from "./lib/stripe";
+import { notFound } from "./middlewares/notFound";
 
 const app: Application = express();
 app.use(
@@ -106,6 +107,8 @@ app.use("/api/admin", userRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 app.use("/api/payments", paymentRoutes);
+
+app.use(notFound);
 
 app.use(globalErrorHandler);
 
