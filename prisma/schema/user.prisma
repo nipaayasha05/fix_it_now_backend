@@ -13,6 +13,7 @@ model User{
    technician Technician?
 booking Booking[]
    reviews Review[]
+   payments Payment[]
 
 
    @@map("users")

@@ -23,6 +23,7 @@ model Booking{
     totalPrice Int
     status BookingStatus @default(PENDING)
     reviews Review[]
+    payment Payment?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
