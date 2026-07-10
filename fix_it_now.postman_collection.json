@@ -1,0 +1,879 @@
+{
+  "info": {
+    "_postman_id": "3d132937-a52f-4ac9-bfec-0b021ed8d710",
+    "name": "fix_it_now",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45057507",
+    "_collection_link": "https://go.postman.co/collection/45057507-3d132937-a52f-4ac9-bfec-0b021ed8d710?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "create-user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"ema\",\r\n    \"email\": \"jhon@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"phone\": \"012345678910\",\r\n    \"role\":\"TECHNICIAN\",\r\n    \"status\":\"ACTIVE\"\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/auth/register",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login-user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\r\n    \"email\": \"abir@gmail.com\",\r\n        \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/auth/login",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create-technician",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n   \r\n    \"bio\": \"Professional plumber with expertise in residential and commercial plumbing systems.\",\r\n    \"experience\": 0,\r\n    \"location\": \"khulna\",\r\n    \"skills\": [\r\n        \"Plumbing\",\r\n        \"Pipe Installation\",\r\n        \"Leak Repair\",\r\n        \"Water Heater Repair\"\r\n    ],\r\n   \r\n    \"averageRating\": 4.8,\r\n    \"totalReviews\": 52\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update-technician",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"bio\": \"Professional plumber with expertise in residential and commercial plumbing systems.7\",\r\n    \"experience\": 4,\r\n    \"location\": \"Dhaka\",\r\n    \"skills\": [\r\n        \"Plumbing\",\r\n        \"Pipe Installation\",\r\n        \"Leak Repair\",\r\n        \"Water Heater Repair\"\r\n    ],\r\n    \"status\": \"AVAILABLE\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/profile",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create-category",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\":\"Carpentry\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/admin/categories",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-all-categories",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/admin/categories",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create-service",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Custom Furniture Repair\",\r\n  \"description\": \"Repair wooden furniture, install cabinets, shelves, and doors with expert craftsmanship.\",\r\n  \"price\": 1700,\r\n  \"duration\": 180,\r\n  \"categoryId\": \"3e5e67f1-2bcf-479b-abb3-94cf1ab956e7\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/services",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "services"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update-service",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Custom Furniture Repair & Installation\",\r\n  \"description\": \"Repair wooden furniture, install cabinets, shelves, and doors with expert craftsmanship.\",\r\n  \"price\": 2500,\r\n  \"duration\": 18,\r\n  \"categoryId\": \"3e5e67f1-2bcf-479b-abb3-94cf1ab956e7\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/services/36d4aa41-be9c-4611-8f68-9c93e9b59475",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "services",
+            "36d4aa41-be9c-4611-8f68-9c93e9b59475"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-all-service",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/services",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "services"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "Plumbing",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "title",
+              "value": "Ac",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "description",
+              "value": "repair",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "price",
+              "value": "800",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "minPrice",
+              "value": "2000",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "maxPrice",
+              "value": "3000",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "location",
+              "value": "khulna",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Ac",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Khulna",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Electrical",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Plumbing",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "averageRating",
+              "value": "3",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create-availability",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": " {\r\n  \"slots\": [\r\n    {\r\n      \"day\": \"WEDNESDAY\",\r\n      \"startTime\": \"12:30\",\r\n      \"endTime\": \"13:00\"\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/availability",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "availability"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update-availability",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "  { \r\n      \"day\": \"FRIDAY\",\r\n      \"startTime\": \"09:00\",\r\n      \"endTime\": \"11:00\"\r\n    }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/availability/c9b6f321-99fe-4bbf-8786-0f40cf342fe6",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "availability",
+            "c9b6f321-99fe-4bbf-8786-0f40cf342fe6"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post-booking",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"technicianId\": \"1e790d1c-fbec-4899-a42d-f5b5567f2122\",\r\n    \"serviceId\": \"24825eab-83f7-4688-81e3-bca991e31870\",\r\n    \"availabilityId\": \"33ce1aa1-1748-4f38-a9fb-3838cced4225\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/bookings",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-my-bookings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/bookings",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-my-booking-id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/bookings/1818724a-d198-49b4-9f72-49478cfe27ff",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "bookings",
+            "1818724a-d198-49b4-9f72-49478cfe27ff"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-technician-booking",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/bookings",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "bookings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-all-technicians",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technicians",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technicians"
+          ],
+          "query": [
+            {
+              "key": "searchTerm",
+              "value": "abir",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "price",
+              "value": "800",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "minPrice",
+              "value": "2000",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "maxPrice",
+              "value": "3000",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "location",
+              "value": "khulna",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Ac",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Electrical",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "Plumbing",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "averageRating",
+              "value": "4.8",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "searchTerm",
+              "value": "abir",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "category",
+              "value": "Plumbing",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-all-users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/admin/users",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-auth-my",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/auth/me",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-technician-id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technicians/fa836fbe-1ffe-40c8-a98f-9214c0a22cce",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technicians",
+            "fa836fbe-1ffe-40c8-a98f-9214c0a22cce"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update-user-admin",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\":\"ACTIVE\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/admin/users/0a01c26d-7f81-4460-90c2-d81a6628e302",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "users",
+            "0a01c26d-7f81-4460-90c2-d81a6628e302"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update-booking",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\":\"ACCEPTED\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/technician/bookings/f8972c52-2c22-42e9-96e3-684bb7956f4a",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "technician",
+            "bookings",
+            "f8972c52-2c22-42e9-96e3-684bb7956f4a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create-review",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"bookingId\": \"f8972c52-2c22-42e9-96e3-684bb7956f4a\",\r\n  \"rating\": 4,\r\n  \"comment\":\"Great\"  \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/reviews",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "reviews"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-categories-public",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/categories",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "payment-checkout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n    {\r\n  \"bookingId\": \"f8972c52-2c22-42e9-96e3-684bb7956f4a\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/payments/create",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "payments",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-my-payments",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/payments",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "payments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-payment-details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/payments/80187a9b-d8e6-4e42-b9ed-09f4d88f6f4c",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "payments",
+            "80187a9b-d8e6-4e42-b9ed-09f4d88f6f4c"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get-all-bookings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://fix-it-now-backend-ivory.vercel.app/api/bookings/admin",
+          "protocol": "https",
+          "host": [
+            "fix-it-now-backend-ivory",
+            "vercel",
+            "app"
+          ],
+          "path": [
+            "api",
+            "bookings",
+            "admin"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

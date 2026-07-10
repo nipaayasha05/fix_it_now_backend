@@ -1,4 +1,4 @@
-# FixItNow 🔧
+# FixItNow
 
 **A Home Service Marketplace Backend API**
 
@@ -18,7 +18,7 @@ FixItNow is a backend REST API for a home service marketplace where customers ca
 
 The API supports secure authentication, role-based authorization, booking management, Stripe payment processing, reviews, technician availability, and admin management.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 
@@ -59,12 +59,60 @@ The API supports secure authentication, role-based authorization, booking manage
 
 .env.example
 
+## Features
+
+### Authentication & Authorization
+
+- User registration and login
+- JWT-based authentication
+- Role-based access control (Customer, Technician, Admin)
+- Get authenticated user profile
+
+### Customer
+
+- Browse service categories
+- Search and filter services
+- Browse technicians
+- View technician details
+- Create service bookings
+- View booking history
+- Submit technician reviews
+- Secure payments using Stripe
+- View payment history
+
+### Technician
+
+- Create and update technician profile
+- Create and manage services
+- Manage availability schedules
+- View assigned bookings
+- Accept or update booking status
+
+### Admin
+
+- Manage users
+- Update user status
+- Create and manage service categories
+- View all bookings
+
+### 💳 Payment
+
+- Stripe Checkout integration
+- Secure payment processing
+- Payment status tracking
+
+### ✅ API Features
+
+- RESTful API architecture
+- Server-side input validation
+- Consistent JSON response format
+- Global error handling
+- PostgreSQL with Prisma ORM
+
 ## Installation
 
 ```bash
-git clone https://github.com/your-username/fix-it-now-backend.git
-
-cd fix-it-now-backend
+git clone https://github.com/nipaayasha05/fix_it_now_backend
 
 npm install
 
@@ -92,11 +140,9 @@ Main Models
 
 ## Roles
 
-Customer
-
-Technician
-
-Admin
+- Customer
+- Technician
+- Admin
 
 ## Response Format
 
