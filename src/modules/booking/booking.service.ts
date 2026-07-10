@@ -4,6 +4,21 @@ import { IBooking } from "./booking.interface";
 import httpStatus from "http-status";
 
 const createBooking = async (payload: IBooking, customerId: string) => {
+  const { technicianId, serviceId, availabilityId, note } = payload;
+
+  //  technicianId,
+  if (!technicianId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Technician id is required");
+  }
+  //  serviceId,
+  if (!serviceId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Service id is required");
+  }
+  //  availabilityId,
+  if (!availabilityId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Availability id is required");
+  }
+
   console.log(customerId);
 
   const user = await prisma.user.findUniqueOrThrow({

@@ -6,6 +6,8 @@ import { bookingService } from "./booking.service";
 
 const createBooking = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const { serviceId, date, time } = req.body;
+
     console.log(req.user);
 
     const id = req.user?.id;

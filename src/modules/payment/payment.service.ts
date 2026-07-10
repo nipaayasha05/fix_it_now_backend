@@ -10,6 +10,10 @@ import { handleCheckoutCompleted } from "./payment.utils";
 import httpStatus from "http-status";
 
 const createCheckoutSession = async (userId: string, bookingId: string) => {
+  if (!bookingId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Booking ID is required.");
+  }
+
   const transactionResult = await prisma.$transaction(async (tx) => {
     const user = await tx.user.findUniqueOrThrow({
       where: {

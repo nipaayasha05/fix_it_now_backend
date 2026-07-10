@@ -1,9 +1,12 @@
-import { TechnicianStatus } from "../../../prisma/generated/prisma/enums";
+import {
+  BookingStatus,
+  TechnicianStatus,
+} from "../../../prisma/generated/prisma/enums";
 
 export interface TechnicianPayload {
   bio?: string;
   experience: number;
-  hourlyRate: number;
+
   location: string;
   skills: string[];
   status: TechnicianStatus;
@@ -12,16 +15,16 @@ export interface TechnicianPayload {
 }
 
 export interface TechnicianPayloadUpdate {
-  bio?: string;
-  experience?: number;
-  hourlyRate?: number;
-  location?: string;
-  skills?: string[];
-  status?: TechnicianStatus;
+  bio: string;
+  experience: number;
+  hourlyRate: number;
+  location: string;
+  skills: string[];
+  status: TechnicianStatus;
   // averageRating?: number;
   // totalReviews?: number;
 }
 
 export interface TechnicianBookingStatusPayload {
-  status?: TechnicianStatus;
+  status?: BookingStatus;
 }

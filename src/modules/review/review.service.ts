@@ -4,6 +4,17 @@ import { IReview } from "./review.interface";
 import httpStatus from "http-status";
 
 const createReview = async (customerId: string, payload: IReview) => {
+  const { bookingId, rating } = payload;
+
+  // bookingId
+  if (!bookingId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Booking ID is required");
+  }
+  // rating
+  if (!rating === undefined) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Rating is required");
+  }
+
   const booking = await prisma.booking.findUniqueOrThrow({
     where: {
       id: payload.bookingId,

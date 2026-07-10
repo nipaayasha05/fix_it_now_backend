@@ -16,6 +16,26 @@ const createTechnician = async (payload: TechnicianPayload, userId: string) => {
     },
   });
 
+  if (!payload.bio) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Bio is required");
+  }
+
+  if (payload.experience === undefined) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Experience is required");
+  }
+
+  if (!payload.location) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Location is required");
+  }
+
+  if (!payload.skills || payload.skills.length === 0) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Skills is required");
+  }
+
+  // if (!payload.status) {
+  //   throw new APPError(httpStatus.BAD_REQUEST, "Status is required.");
+  // }
+
   const result = await prisma.technician.create({
     data: {
       ...payload,
@@ -33,6 +53,26 @@ const updateTechnicianProfile = async (
   payload: TechnicianPayloadUpdate,
 ) => {
   const { bio, experience, location, skills, status } = payload;
+
+  if (!payload.bio) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Bio is required");
+  }
+
+  if (payload.experience === undefined) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Experience is required");
+  }
+
+  if (!payload.location) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Location is required");
+  }
+
+  if (!payload.skills || payload.skills.length === 0) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Skills is required");
+  }
+
+  if (!payload.status) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Status is required.");
+  }
 
   const updateTechnicianProfile = await prisma.technician.update({
     where: {
@@ -266,6 +306,11 @@ const updateStatusBooking = async (
   });
 
   const { status } = payload;
+
+  const validStatus = Object.values(BookingStatus);
+  if (!validStatus.includes(status as BookingStatus)) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Status is invalid.");
+  }
 
   const booking = await prisma.booking.findUniqueOrThrow({
     where: {

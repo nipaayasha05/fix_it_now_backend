@@ -1,9 +1,45 @@
 import { Prisma } from "../../../prisma/generated/prisma/client";
 import { ServiceWhereInput } from "../../../prisma/generated/prisma/models";
 import { prisma } from "../../lib/prisma";
+import APPError from "../../middlewares/appError";
 import { IService, IServiceUpdate } from "./service.interface";
+import httpStatus from "http-status-codes";
 
 const createService = async (payload: IService, id: string) => {
+  const { title, price, duration, categoryId } = payload;
+
+  // title
+  if (!title || !title.trim()) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Title is required");
+  }
+
+  // price
+  if (price === undefined || price === null) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Price is required");
+  }
+
+  if (!Number.isInteger(price) || price <= 0) {
+    throw new APPError(
+      httpStatus.BAD_REQUEST,
+      "Price must be a positive integer",
+    );
+  }
+
+  // duration
+  if (duration !== undefined) {
+    if (!Number.isInteger(duration) || duration <= 0) {
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Duration must be a positive integer",
+      );
+    }
+  }
+
+  // categoryId
+  if (!categoryId) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Category ID is required");
+  }
+
   const technician = await prisma.technician.findUniqueOrThrow({
     where: {
       technicianId: id,
@@ -19,6 +55,33 @@ const createService = async (payload: IService, id: string) => {
 };
 
 const updateService = async (id: string, payload: IServiceUpdate) => {
+  const { title, price, duration } = payload;
+
+  // title
+  if (!title || !title.trim()) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Title is required");
+  }
+
+  // price
+  if (price !== undefined) {
+    if (!Number.isInteger(price) || price <= 0) {
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Price must be a positive integer",
+      );
+    }
+  }
+
+  // duration
+  if (duration !== undefined) {
+    if (!Number.isInteger(duration) || duration <= 0) {
+      throw new APPError(
+        httpStatus.BAD_REQUEST,
+        "Duration must be a positive integer",
+      );
+    }
+  }
+
   const service = await prisma.service.findUniqueOrThrow({
     where: {
       id,
