@@ -10,6 +10,14 @@ import httpStatus from "http-status";
 const loginUser = async (payload: ILoginUser) => {
   const { email, password } = payload;
 
+  if (!email) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Email is required");
+  }
+
+  if (!password) {
+    throw new APPError(httpStatus.BAD_REQUEST, "Password is required");
+  }
+
   const user = await prisma.user.findFirstOrThrow({
     where: {
       email,

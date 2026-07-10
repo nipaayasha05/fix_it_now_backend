@@ -7,6 +7,8 @@ const router = Router();
 
 router.post("/", auth(Role.CUSTOMER), bookingController.createBooking);
 
+router.get("/admin", auth(Role.ADMIN), bookingController.getAllBookings);
+
 router.get("/", auth(Role.CUSTOMER), bookingController.getMyAllBookings);
 
 router.get("/:id", auth(Role.CUSTOMER), bookingController.getBookingById);
