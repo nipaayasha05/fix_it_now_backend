@@ -259,7 +259,7 @@ const getTechnicianAllBookings = async (id: string) => {
       availability: true,
     },
   });
-  console.log(result, "result getTechnicianAllBookings");
+  // console.log(result, "result getTechnicianAllBookings");
   return result;
 };
 

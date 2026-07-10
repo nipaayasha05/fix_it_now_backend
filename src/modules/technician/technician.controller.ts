@@ -58,7 +58,7 @@ const getAllTechnicians = catchAsync(
 
 const getTechnicianAllBookings = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user, "req.user");
+    // console.log(req.user, "req.user");
 
     const id = req.user?.id;
 
@@ -73,7 +73,7 @@ const getTechnicianAllBookings = catchAsync(
       data: result,
     });
 
-    console.log(result, "result getTechnicianAllBookings Controller");
+    // console.log(result, "result getTechnicianAllBookings Controller");
   },
 );
 

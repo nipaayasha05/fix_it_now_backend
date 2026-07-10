@@ -19,7 +19,7 @@ const createBooking = async (payload: IBooking, customerId: string) => {
     throw new APPError(httpStatus.BAD_REQUEST, "Availability id is required");
   }
 
-  console.log(customerId);
+  // console.log(customerId);
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {

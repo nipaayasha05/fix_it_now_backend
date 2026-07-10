@@ -8,7 +8,7 @@ import {
 import httpStatus from "http-status";
 
 const createAvailability = async (payload: AvailabilityPayload, id: string) => {
-  console.log(id);
+  // console.log(id);
 
   const technician = await prisma.technician.findUniqueOrThrow({
     where: {
@@ -107,7 +107,9 @@ const updateAvailability = async (
     },
   });
 
-  if (payload.day && !Object.values(Day).includes(payload.day as Day)) {
+  const validDays = Object.values(Day);
+
+  if (payload.day !== undefined && !validDays.includes(payload.day as Day)) {
     throw new APPError(httpStatus.BAD_REQUEST, "Invalid day");
   }
 

@@ -72,7 +72,7 @@ export const auth = (...requiredRoles: Role[]) => {
       id,
       role,
     };
-    console.log(req.user);
+    // console.log(req.user);
     next();
   });
 };

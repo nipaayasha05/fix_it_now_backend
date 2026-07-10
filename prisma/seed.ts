@@ -1,5 +1,6 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
+import bcrypt from "bcryptjs";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -12,6 +13,8 @@ const prisma = new PrismaClient({
 async function main() {
   console.log("Seeding started...");
 
+  const hashedPassword = await bcrypt.hash("123456", 10);
+
   //   data insert here
 
   const admin = await prisma.user.upsert({
@@ -22,7 +25,7 @@ async function main() {
     create: {
       name: "Admin",
       email: "admin1@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111111",
       role: "ADMIN",
     },
@@ -36,7 +39,7 @@ async function main() {
     create: {
       name: "Rahim",
       email: "rahima@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111112",
       role: "CUSTOMER",
     },
@@ -50,7 +53,7 @@ async function main() {
     create: {
       name: "Jannat Akter",
       email: "jannat@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111116",
       role: "CUSTOMER",
     },
@@ -64,7 +67,7 @@ async function main() {
     create: {
       name: "Tanvir Hasan",
       email: "tanvir@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111117",
       role: "CUSTOMER",
     },
@@ -78,7 +81,7 @@ async function main() {
     create: {
       name: "Hasan Electrician",
       email: "hasan@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111115",
       role: "TECHNICIAN",
     },
@@ -92,7 +95,7 @@ async function main() {
     create: {
       name: "Rakib Plumber",
       email: "rakib@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111118",
       role: "TECHNICIAN",
     },
@@ -106,7 +109,7 @@ async function main() {
     create: {
       name: "Sabbir Cleaner",
       email: "sabbir@gmail.com",
-      password: "123456",
+      password: hashedPassword,
       phone: "01711111119",
       role: "TECHNICIAN",
     },
