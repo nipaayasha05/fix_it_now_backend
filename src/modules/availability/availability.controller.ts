@@ -42,7 +42,41 @@ const updateAvailability = catchAsync(
   },
 );
 
+const getAllAvailabilityByTechnicianId = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    //  const id = req.params.id;
+    const result = await availabilityService.getAllAvailabilityByTechnicianId(
+      req.user?.id as string,
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All availability retrieved successfully",
+      data: result,
+    });
+  },
+);
+
+const getMyAvailability = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    const result = await availabilityService.getMyAvailability(
+      userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My availability retrieved successfully",
+      data: result,
+    });
+  },
+);
+
 export const availabilityController = {
   createAvailability,
   updateAvailability,
+  getAllAvailabilityByTechnicianId,
+  getMyAvailability,
 };

@@ -6,7 +6,10 @@ import { userService } from "./user.service";
 
 const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const payload = req.body;
+    const payload = {
+      ...req.body,
+    };
+    console.log(payload, "payload");
 
     const user = await userService.registerUserIntoDB(payload);
 
@@ -14,7 +17,7 @@ const registerUser = catchAsync(
       success: true,
       statusCode: httpStatus.CREATED,
       message: "User registered successfully",
-      data: user,
+      data: { user },
     });
   },
 );
@@ -61,9 +64,23 @@ const updateUser = catchAsync(
   },
 );
 
+const getOverview = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await userService.getOverview();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Overview fetched successfully",
+      data: result,
+    });
+  },
+);
+
 export const userController = {
   registerUser,
   getAllUsers,
   getMe,
   updateUser,
+  getOverview,
 };

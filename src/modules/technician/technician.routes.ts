@@ -21,6 +21,12 @@ router.get(
   technicianController.getTechnicianAllBookings,
 );
 
+router.get(
+  "/dashboard",
+  auth(Role.TECHNICIAN),
+  technicianController.getTechnicianDashboard,
+);
+
 router.get("/:id", technicianController.technicianById);
 
 router.patch(

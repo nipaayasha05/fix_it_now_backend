@@ -54,8 +54,38 @@ const getAllServices = catchAsync(
   },
 );
 
+const getServiceById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const result = await serviceService.getServiceById(id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Service retrieved successfully",
+      data: result,
+    });
+  },
+);
+
+const getMyServices = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.user?.id;
+    const result = await serviceService.getMyServices(id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My services retrieved successfully",
+      data: result,
+    });
+  },
+);
+
 export const serviceController = {
   createService,
   updateService,
   getAllServices,
+  getServiceById,
+  getMyServices,
 };

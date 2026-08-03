@@ -11,12 +11,12 @@ router.get("/admin", auth(Role.ADMIN), bookingController.getAllBookings);
 
 router.get("/", auth(Role.CUSTOMER), bookingController.getMyAllBookings);
 
-router.get("/:id", auth(Role.CUSTOMER), bookingController.getBookingById);
+router.get(
+  "/reviews/eligible",
+  auth(Role.CUSTOMER),
+  bookingController.getReviewableBookings,
+);
 
-// router.get(
-//   "/bookings",
-//   auth(Role.TECHNICIAN),
-//   bookingController.getTechnicianAllBookings,
-// );
+router.get("/:id", auth(Role.CUSTOMER), bookingController.getBookingById);
 
 export const bookingRoutes = router;

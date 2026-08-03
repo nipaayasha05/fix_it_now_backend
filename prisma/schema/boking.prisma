@@ -3,19 +3,19 @@ model Booking{
 
     // Customer
     customerId String
-    customer User @relation( fields: [customerId], references: [id])
+    customer User @relation( fields: [customerId], references: [id],onDelete: Cascade)
 
     // Technician
     technicianId String
-    technician Technician @relation(fields: [technicianId], references: [id])
+    technician Technician @relation(fields: [technicianId], references: [id],onDelete: Cascade)
 
     // Service
     serviceId String
-    service Service @relation(fields: [serviceId], references: [id])
+    service Service @relation(fields: [serviceId], references: [id],onDelete: Cascade)
 
     // Booking Information
     availabilityId String
-    availability Availability @relation(fields: [availabilityId], references: [id])
+    availability Availability @relation(fields: [availabilityId], references: [id],onDelete: Cascade)
 
     // Customer Problem
     note String?

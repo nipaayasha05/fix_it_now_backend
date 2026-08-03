@@ -5,6 +5,14 @@ import { Role } from "../../../prisma/generated/prisma/enums";
 
 const router = Router();
 
+router.get(
+  "/my-availability",
+  auth(Role.TECHNICIAN),
+  availabilityController.getMyAvailability,
+);
+
+// router.get("/:id", availabilityController.getAllAvailabilityByTechnicianId);
+
 router.post(
   "/",
   auth(Role.TECHNICIAN),

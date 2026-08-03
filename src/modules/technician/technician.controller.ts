@@ -116,6 +116,18 @@ const updateTechnicianOwnBooking = catchAsync(
   },
 );
 
+const getTechnicianDashboard = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await technicianService.getDashboard(req.user?.id as string);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Technician dashboard retrieved successfully",
+      data: result,
+    });
+  },
+);
+
 export const technicianController = {
   createTechnician,
   updateTechnicianProfile,
@@ -123,4 +135,5 @@ export const technicianController = {
   getAllTechnicians,
   technicianById,
   updateTechnicianOwnBooking,
+  getTechnicianDashboard,
 };

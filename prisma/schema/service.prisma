@@ -8,9 +8,9 @@ model Service{
 
     bookings Booking[]
 
-    technician Technician @relation(fields:[technicianId],references:[id])
+    technician Technician @relation(fields:[technicianId],references:[id],onDelete: Cascade)
     categoryId String
-    category Category @relation(fields:[categoryId],references:[id])
+    category Category @relation(fields:[categoryId],references:[id],onDelete: Cascade)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

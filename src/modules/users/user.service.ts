@@ -52,9 +52,9 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
     );
   }
 
-  if (!status) {
-    throw new APPError(httpStatus.BAD_REQUEST, "Status is required");
-  }
+  // if (!status) {
+  //   throw new APPError(httpStatus.BAD_REQUEST, "Status is required");
+  // }
 
   const createUser = await prisma.user.create({
     data: {
@@ -97,7 +97,11 @@ const getMe = async (userId: string) => {
     omit: {
       password: true,
     },
+    include: {
+      technician: true,
+    },
   });
+  console.log(user);
   if (!user) {
     throw new APPError(httpStatus.NOT_FOUND, "User not found.");
   }
@@ -137,9 +141,36 @@ const updateUser = async (userId: string, payload: UpdateUserPayload) => {
   return result;
 };
 
+const getOverview = async () => {
+  const totalUsers = await prisma.user.count();
+
+  const activeBookings = await prisma.booking.count({
+    where: {
+      status: {
+        in: ["PENDING", "ACCEPTED", "IN_PROGRESS"],
+      },
+    },
+  });
+
+  const revenue = await prisma.booking.aggregate({
+    _sum: {
+      totalPrice: true,
+    },
+    where: {
+      status: "ACCEPTED",
+    },
+  });
+  return {
+    totalUsers,
+    activeBookings,
+    totalRevenue: revenue._sum.totalPrice || 0,
+  };
+};
+
 export const userService = {
   registerUserIntoDB,
   getAllUsers,
   getMe,
   updateUser,
+  getOverview,
 };

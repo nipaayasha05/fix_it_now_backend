@@ -71,10 +71,25 @@ const getAllBookings = catchAsync(
   },
 );
 
+export const getReviewableBookings = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.user?.id;
+    const result = await bookingService.getReviewableBookings(id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "ReviewableBookings retrieved successfully",
+      data: result,
+    });
+  },
+);
+
 export const bookingController = {
   createBooking,
   getMyAllBookings,
   getBookingById,
   // getTechnicianAllBookings,
   getAllBookings,
+  getReviewableBookings,
 };

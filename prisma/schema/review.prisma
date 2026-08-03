@@ -2,11 +2,11 @@ model Review{
     id String @id @default(uuid())
 
     customerId String
-    customer User @relation(fields: [customerId], references: [id])
+    customer User @relation(fields: [customerId], references: [id],onDelete: Cascade)
     technicianId String
-    technician Technician @relation(fields: [technicianId], references: [id])
+    technician Technician @relation(fields: [technicianId], references: [id],onDelete: Cascade)
     bookingId String @unique
-    booking Booking @relation(fields: [bookingId], references: [id])
+    booking Booking @relation(fields: [bookingId], references: [id],onDelete: Cascade)
     rating Int
     comment String?
     createdAt DateTime @default(now())

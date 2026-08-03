@@ -2,7 +2,7 @@ model Availability{
     id String @id @default(uuid())
 
     technicianId String
-    technician Technician @relation(fields:[technicianId],references:[id])
+    technician Technician @relation(fields:[technicianId],references:[id],onDelete: Cascade)
 
     day Day
     startTime String // HH:mm

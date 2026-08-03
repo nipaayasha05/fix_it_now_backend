@@ -37,6 +37,8 @@ app.get("/", (req, res) => {
   res.send("FixItNow!");
 });
 
+// app.use("/uploads", express.static("uploads"));
+
 app.use("/api/auth", userRoutes);
 app.use("/api/auth", authRoutes);
 

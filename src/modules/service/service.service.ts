@@ -234,8 +234,48 @@ const getAllServices = async (query: IServiceQuery) => {
   return services;
 };
 
+const getServiceById = async (id: string) => {
+  const service = await prisma.service.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      technician: {
+        include: {
+          technician: true,
+        },
+      },
+      category: true,
+    },
+  });
+  if (!service) {
+    throw new APPError(httpStatus.NOT_FOUND, "Service not found.");
+  }
+  return service;
+};
+
+const getMyServices = async (userId: string) => {
+  const result = await prisma.technician.findUniqueOrThrow({
+    where: {
+      technicianId: userId,
+    },
+  });
+  const services = await prisma.service.findMany({
+    where: {
+      technicianId: result.id,
+    },
+    include: {
+      technician: true,
+      category: true,
+    },
+  });
+  return services;
+};
+
 export const serviceService = {
   createService,
   updateService,
   getAllServices,
+  getServiceById,
+  getMyServices,
 };

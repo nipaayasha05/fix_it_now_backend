@@ -94,6 +94,26 @@ const createReview = async (customerId: string, payload: IReview) => {
   return result;
 };
 
+const getReviews = async (customerId: string) => {
+  return await prisma.review.findMany({
+    where: {
+      customerId,
+    },
+    include: {
+      technician: true,
+      booking: {
+        include: {
+          service: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
+
 export const reviewService = {
   createReview,
+  getReviews,
 };

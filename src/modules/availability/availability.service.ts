@@ -85,6 +85,9 @@ const createAvailability = async (payload: AvailabilityPayload, id: string) => {
     where: {
       technicianId: technician.id,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return result;
@@ -176,7 +179,51 @@ const updateAvailability = async (
   return result;
 };
 
+const getAllAvailabilityByTechnicianId = async (id: string) => {
+  const result = await prisma.availability.findMany({
+    where: {
+      technicianId: id,
+      isAvailable: true,
+      booking: {
+        none: {},
+      },
+    },
+    include: {
+      technician: {
+        include: {
+          technician: true,
+        },
+      },
+      // category: true,
+      booking: true,
+      // service: true,
+    },
+  });
+  return result;
+};
+
+const getMyAvailability = async (userId: string) => {
+  const technician = await prisma.technician.findUniqueOrThrow({
+    where: {
+      technicianId: userId,
+    },
+  });
+
+  const availability = await prisma.availability.findMany({
+    where: {
+      technicianId: technician.id,
+    },
+    include: {
+      booking: true,
+      // service: true,
+    },
+  });
+
+  return availability;
+};
 export const availabilityService = {
   createAvailability,
   updateAvailability,
+  getAllAvailabilityByTechnicianId,
+  getMyAvailability,
 };

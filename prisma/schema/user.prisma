@@ -11,7 +11,7 @@ model User{
    updatedAt DateTime @updatedAt
 
    technician Technician?
-booking Booking[]
+   booking Booking[]
    reviews Review[]
    payments Payment[]
 

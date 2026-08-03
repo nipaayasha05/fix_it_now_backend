@@ -283,7 +283,14 @@ const getTechnicianById = async (id: string) => {
         },
       },
       bookings: true,
-      availabilities: true,
+      availabilities: {
+        where: {
+          isAvailable: true,
+          booking: {
+            none: {},
+          },
+        },
+      },
       services: true,
       reviews: true,
     },
@@ -337,6 +344,64 @@ const updateStatusBooking = async (
   return result;
 };
 
+const getDashboard = async (userId: string) => {
+  const technician = await prisma.technician.findUniqueOrThrow({
+    where: {
+      technicianId: userId,
+    },
+  });
+
+  if (!technician) {
+    throw new APPError(httpStatus.NOT_FOUND, "Technician not found.");
+  }
+
+  const technicianId = technician.id;
+
+  const upcomingJobs = await prisma.booking.findMany({
+    where: {
+      technicianId,
+      status: {
+        in: ["ACCEPTED", "IN_PROGRESS"],
+      },
+      createdAt: {
+        gte: new Date(),
+      },
+    },
+  });
+
+  const pedingRequests = await prisma.booking.count({
+    where: {
+      technicianId,
+      status: "PENDING",
+    },
+  });
+
+  const completedRequests = await prisma.booking.count({
+    where: {
+      technicianId,
+      status: "COMPLETED",
+    },
+  });
+
+  const earnings = await prisma.payment.aggregate({
+    where: {
+      status: "SUCCESS",
+      booking: {
+        technicianId,
+      },
+    },
+    _sum: {
+      amount: true,
+    },
+  });
+  return {
+    upcomingJobs,
+    pedingRequests,
+    completedRequests,
+    totalEarnings: earnings._sum.amount || 0,
+  };
+};
+
 export const technicianService = {
   createTechnician,
   updateTechnicianProfile,
@@ -344,4 +409,5 @@ export const technicianService = {
   getAllTechnicians,
   getTechnicianById,
   updateStatusBooking,
+  getDashboard,
 };
