@@ -9,4 +9,6 @@ router.post("/", auth(Role.CUSTOMER), reviewController.createReview);
 
 router.get("/", auth(Role.CUSTOMER), reviewController.getReviews);
 
+router.get("/public", reviewController.getPublicReviews);
+
 export const reviewRoutes = router;

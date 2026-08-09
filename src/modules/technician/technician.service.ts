@@ -1,5 +1,8 @@
 import { BookingStatus } from "../../../prisma/generated/prisma/enums";
-import { TechnicianWhereInput } from "../../../prisma/generated/prisma/models";
+import {
+  TechnicianOrderByWithRelationInput,
+  TechnicianWhereInput,
+} from "../../../prisma/generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import APPError from "../../middlewares/appError";
 import {
@@ -107,6 +110,8 @@ interface ITechnicianQuery {
   location?: string;
   page?: string;
   limit?: string;
+  sortBy?: "experience" | "rating";
+  sortOrder?: "asc" | "desc";
 }
 
 const getAllTechnicians = async (query: ITechnicianQuery) => {
@@ -212,10 +217,26 @@ const getAllTechnicians = async (query: ITechnicianQuery) => {
     });
   }
 
+  // sorting
+  let orderBy: TechnicianOrderByWithRelationInput | undefined;
+
+  if (query.sortBy === "experience") {
+    orderBy = {
+      experience: query.sortOrder === "asc" ? "asc" : "desc",
+    };
+  }
+
+  if (query.sortBy === "rating") {
+    orderBy = {
+      averageRating: query.sortOrder === "asc" ? "asc" : "desc",
+    };
+  }
+
   const technicians = await prisma.technician.findMany({
     where: {
       AND: andConditions,
     },
+    orderBy,
     include: {
       technician: {
         select: {

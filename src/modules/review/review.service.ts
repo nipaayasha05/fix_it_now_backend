@@ -113,7 +113,34 @@ const getReviews = async (customerId: string) => {
   });
 };
 
+const getPublicReviews = async () => {
+  return await prisma.review.findMany({
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      customer: {
+        select: {
+          name: true,
+          profileImage: true,
+        },
+      },
+      booking: {
+        select: {
+          service: true,
+          totalPrice: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 3,
+  });
+};
+
 export const reviewService = {
   createReview,
   getReviews,
+  getPublicReviews,
 };

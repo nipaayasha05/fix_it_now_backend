@@ -1,5 +1,8 @@
 import { Prisma } from "../../../prisma/generated/prisma/client";
-import { ServiceWhereInput } from "../../../prisma/generated/prisma/models";
+import {
+  ServiceOrderByWithRelationInput,
+  ServiceWhereInput,
+} from "../../../prisma/generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import APPError from "../../middlewares/appError";
 import { IService, IServiceUpdate } from "./service.interface";
@@ -116,6 +119,9 @@ interface IServiceQuery {
   location?: string;
   page?: string;
   limit?: string;
+
+  sortBy?: "price" | "rating";
+  sortOrder?: "asc" | "desc";
 }
 
 //publice route
@@ -221,14 +227,33 @@ const getAllServices = async (query: IServiceQuery) => {
     });
   }
 
+  // sorting
+  let orderBy: ServiceOrderByWithRelationInput | undefined;
+
+  if (query.sortBy === "price") {
+    orderBy = {
+      price: query.sortOrder === "asc" ? "asc" : "desc",
+    };
+  }
+
+  if (query.sortBy === "rating") {
+    orderBy = {
+      technician: {
+        averageRating: query.sortOrder === "asc" ? "asc" : "desc",
+      },
+    };
+  }
+
   const services = await prisma.service.findMany({
     where: {
       AND: andConditions,
     },
+    orderBy,
 
     include: {
       technician: true,
       category: true,
+      bookings: true,
     },
   });
   return services;
