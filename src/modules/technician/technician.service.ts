@@ -1,5 +1,6 @@
 import { BookingStatus } from "../../../prisma/generated/prisma/enums";
 import {
+  BookingWhereInput,
   TechnicianOrderByWithRelationInput,
   TechnicianWhereInput,
 } from "../../../prisma/generated/prisma/models";
@@ -114,7 +115,11 @@ interface ITechnicianQuery {
   sortOrder?: "asc" | "desc";
 }
 
-const getAllTechnicians = async (query: ITechnicianQuery) => {
+const getAllTechnicians = async (
+  query: ITechnicianQuery,
+  page: number,
+  limit: number,
+) => {
   const andConditions: TechnicianWhereInput[] = [];
 
   if (query.searchTerm) {
@@ -232,56 +237,163 @@ const getAllTechnicians = async (query: ITechnicianQuery) => {
     };
   }
 
-  const technicians = await prisma.technician.findMany({
-    where: {
-      AND: andConditions,
-    },
-    orderBy,
-    include: {
-      technician: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          role: true,
-          status: true,
-          profileImage: true,
-          createdAt: true,
-          updatedAt: true,
+  // pagination
+  const skip = (page - 1) * limit;
+
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [technicians, total] = await Promise.all([
+    prisma.technician.findMany({
+      where: whereCondition,
+      orderBy,
+      skip,
+      take: limit,
+      include: {
+        technician: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            role: true,
+            status: true,
+            profileImage: true,
+            createdAt: true,
+            updatedAt: true,
+          },
         },
+        bookings: true,
+        availabilities: true,
+        services: true,
+        reviews: true,
       },
-      bookings: true,
-      availabilities: true,
-      services: true,
-      reviews: true,
+    }),
+    prisma.technician.count({
+      where: whereCondition,
+    }),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  // const technicians = await prisma.technician.findMany({
+  //   where: {
+  //     AND: andConditions,
+  //   },
+  //   orderBy,
+  //   include: {
+  //     technician: {
+  //       select: {
+  //         id: true,
+  //         name: true,
+  //         email: true,
+  //         phone: true,
+  //         role: true,
+  //         status: true,
+  //         profileImage: true,
+  //         createdAt: true,
+  //         updatedAt: true,
+  //       },
+  //     },
+  //     bookings: true,
+  //     availabilities: true,
+  //     services: true,
+  //     reviews: true,
+  //   },
+  // });
+  return {
+    data: technicians,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
     },
-  });
-  return technicians;
+  };
 };
 
-const getTechnicianAllBookings = async (id: string) => {
+interface IBookingQuery {
+  searchTerm?: string;
+  status?: BookingStatus;
+  page?: string;
+  limit?: string;
+}
+
+const getTechnicianAllBookings = async (
+  id: string,
+  query: IBookingQuery = {},
+  page: number,
+  limit: number,
+) => {
   const technician = await prisma.technician.findUniqueOrThrow({
     where: {
       technicianId: id,
     },
   });
+  const andConditions: BookingWhereInput[] = [];
 
-  const result = await prisma.booking.findMany({
-    where: {
-      technicianId: technician.id,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      service: true,
-      technician: true,
-      availability: true,
-    },
+  if (query.status) {
+    andConditions.push({
+      status: query.status,
+      // mode: "insensitive",
+    });
+  }
+
+  // pagination
+
+  const skip = (page - 1) * limit;
+
+  andConditions.push({
+    technicianId: technician.id,
   });
+
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [result, total] = await Promise.all([
+    prisma.booking.findMany({
+      where: whereCondition,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        service: true,
+        technician: true,
+        availability: true,
+      },
+    }),
+    prisma.booking.count({
+      where: whereCondition,
+    }),
+  ]);
+  const totalPages = Math.ceil(total / limit);
+  // const result = await prisma.booking.findMany({
+  //   where: {
+  //     technicianId: technician.id,
+  //   },
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  //   include: {
+  //     service: true,
+  //     technician: true,
+  //     availability: true,
+  //   },
+  // });
   // console.log(result, "result getTechnicianAllBookings");
-  return result;
+  return {
+    data: result,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
+    },
+  };
 };
 
 const getTechnicianById = async (id: string) => {

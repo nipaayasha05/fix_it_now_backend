@@ -27,7 +27,15 @@ const createBooking = catchAsync(
 const getMyAllBookings = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.user?.id;
-    const result = await bookingService.getMyAllBookings(id as string);
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const query = req.query;
+    const result = await bookingService.getMyAllBookings(
+      id as string,
+      query,
+      page,
+      limit,
+    );
 
     sendResponse(res, {
       success: true,
@@ -60,7 +68,11 @@ const getBookingById = catchAsync(
 const getAllBookings = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // const id = req.user?.id;
-    const result = await bookingService.getAllBookings();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const query = req.query;
+
+    const result = await bookingService.getAllBookings(query, page, limit);
 
     sendResponse(res, {
       success: true,

@@ -9,7 +9,7 @@ const registerUser = catchAsync(
     const payload = {
       ...req.body,
     };
-    console.log(payload, "payload");
+    // console.log(payload, "payload");
 
     const user = await userService.registerUserIntoDB(payload);
 
@@ -24,7 +24,10 @@ const registerUser = catchAsync(
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await userService.getAllUsers();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const query = req.query;
+    const result = await userService.getAllUsers(query, page, limit);
 
     sendResponse(res, {
       success: true,
@@ -77,10 +80,26 @@ const getOverview = catchAsync(
   },
 );
 
+const updateMyInfo = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
+    const userId = req.user?.id as string;
+
+    const result = await userService.updateMyInfo(userId, payload);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User updated successfully",
+      data: result,
+    });
+  },
+);
+
 export const userController = {
   registerUser,
   getAllUsers,
   getMe,
   updateUser,
   getOverview,
+  updateMyInfo,
 };

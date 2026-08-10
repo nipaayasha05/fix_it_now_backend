@@ -125,7 +125,11 @@ interface IServiceQuery {
 }
 
 //publice route
-const getAllServices = async (query: IServiceQuery) => {
+const getAllServices = async (
+  query: IServiceQuery,
+  page: number,
+  limit: number,
+) => {
   const andConditions: ServiceWhereInput[] = [];
 
   if (query.searchTerm) {
@@ -137,12 +141,6 @@ const getAllServices = async (query: IServiceQuery) => {
             mode: "insensitive",
           },
         },
-        // {
-        //   description: {
-        //     contains: query.searchTerm,
-        //     mode: "insensitive",
-        //   },
-        // },
         {
           category: {
             name: {
@@ -171,6 +169,7 @@ const getAllServices = async (query: IServiceQuery) => {
       },
     });
   }
+
   if (query.category) {
     andConditions.push({
       category: {
@@ -227,7 +226,7 @@ const getAllServices = async (query: IServiceQuery) => {
     });
   }
 
-  // sorting
+  // Sorting
   let orderBy: ServiceOrderByWithRelationInput | undefined;
 
   if (query.sortBy === "price") {
@@ -244,19 +243,43 @@ const getAllServices = async (query: IServiceQuery) => {
     };
   }
 
-  const services = await prisma.service.findMany({
-    where: {
-      AND: andConditions,
-    },
-    orderBy,
+  // Pagination
+  const skip = (page - 1) * limit;
 
-    include: {
-      technician: true,
-      category: true,
-      bookings: true,
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [services, total] = await Promise.all([
+    prisma.service.findMany({
+      where: whereCondition,
+      orderBy,
+      skip,
+      take: limit,
+
+      include: {
+        technician: true,
+        category: true,
+        bookings: true,
+      },
+    }),
+
+    prisma.service.count({
+      where: whereCondition,
+    }),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data: services,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
     },
-  });
-  return services;
+  };
 };
 
 const getServiceById = async (id: string) => {

@@ -44,8 +44,15 @@ const updateTechnicianProfile = catchAsync(
 
 const getAllTechnicians = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
     const query = req.query;
-    const result = await technicianService.getAllTechnicians(query);
+    const result = await technicianService.getAllTechnicians(
+      query,
+      page,
+      limit,
+    );
 
     sendResponse(res, {
       success: true,
@@ -58,12 +65,17 @@ const getAllTechnicians = catchAsync(
 
 const getTechnicianAllBookings = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.user, "req.user");
-
     const id = req.user?.id;
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const query = req.query;
 
     const result = await technicianService.getTechnicianAllBookings(
       id as string,
+      query,
+      page,
+      limit,
     );
 
     sendResponse(res, {

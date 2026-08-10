@@ -1,7 +1,16 @@
+import { BookingStatus } from "../../../prisma/generated/prisma/enums";
+import { BookingWhereInput } from "../../../prisma/generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import APPError from "../../middlewares/appError";
 import { IBooking } from "./booking.interface";
 import httpStatus from "http-status";
+
+interface IBookingQuery {
+  searchTerm?: string;
+  status?: BookingStatus;
+  page?: string;
+  limit?: string;
+}
 
 const createBooking = async (payload: IBooking, customerId: string) => {
   const { technicianId, serviceId, availabilityId, note } = payload;
@@ -43,23 +52,78 @@ const createBooking = async (payload: IBooking, customerId: string) => {
   return result;
 };
 
-const getMyAllBookings = async (customerId: string) => {
-  const result = await prisma.booking.findMany({
-    where: {
-      customerId,
-      // status: "ACCEPTED",
-      payment: null,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      technician: true,
-      service: true,
-      availability: true,
-    },
+const getMyAllBookings = async (
+  customerId: string,
+  query: IBookingQuery = {},
+  page: number,
+  limit: number,
+) => {
+  const andConditions: BookingWhereInput[] = [];
+
+  // filtering
+  if (query.status) {
+    andConditions.push({
+      status: query.status,
+      // mode: "insensitive",
+    });
+  }
+
+  const skip = (page - 1) * limit;
+
+  andConditions.push({
+    customerId,
+    payment: null,
   });
-  return result;
+
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [result, total] = await Promise.all([
+    prisma.booking.findMany({
+      where: whereCondition,
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip,
+      take: limit,
+      include: {
+        technician: true,
+        service: true,
+        availability: true,
+      },
+    }),
+    prisma.booking.count({
+      where: whereCondition,
+    }),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  // const result = await prisma.booking.findMany({
+  //   where: {
+  //     customerId,
+  //     // status: "ACCEPTED",
+  //     payment: null,
+  //   },
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  //   include: {
+  //     technician: true,
+  //     service: true,
+  //     availability: true,
+  //   },
+  // });
+  return {
+    data: result,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
+    },
+  };
 };
 
 const getBookingById = async (id: string, customerId: string) => {
@@ -80,18 +144,75 @@ const getBookingById = async (id: string, customerId: string) => {
   return result;
 };
 
-const getAllBookings = async () => {
-  const result = await prisma.booking.findMany({
-    orderBy: {
-      createdAt: "desc",
+const getAllBookings = async (
+  query: IBookingQuery = {},
+  page: number,
+  limit: number,
+) => {
+  const andConditions: BookingWhereInput[] = [];
+
+  // filtering
+  if (query.status) {
+    andConditions.push({
+      status: query.status,
+      // mode: "insensitive",
+    });
+  }
+
+  // pagination
+
+  const skip = (page - 1) * limit;
+
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [result, total] = await Promise.all([
+    prisma.booking.findMany({
+      where: whereCondition,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        technician: {
+          include: {
+            technician: true,
+          },
+        },
+        service: true,
+        availability: true,
+        customer: true,
+      },
+    }),
+    prisma.booking.count({
+      where: whereCondition,
+    }),
+  ]);
+
+  const totalPages = Math.ceil(total / limit);
+
+  // const result = await prisma.booking.findMany({
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  //   include: {
+  //     technician: true,
+  //     service: true,
+  //     availability: true,
+  //     customer: true,
+  //   },
+  // });
+  return {
+    data: result,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
     },
-    include: {
-      technician: true,
-      service: true,
-      availability: true,
-    },
-  });
-  return result;
+  };
 };
 
 const getReviewableBookings = async (customerId: string) => {

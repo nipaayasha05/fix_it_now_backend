@@ -11,7 +11,7 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  console.log("Seeding started...");
+  // console.log("Seeding started...");
 
   const hashedPassword = await bcrypt.hash("123456", 10);
 
@@ -348,7 +348,7 @@ async function main() {
     },
   });
 
-  console.log("Seeding completed!");
+  // console.log("Seeding completed!");
 }
 
 main()
@@ -356,7 +356,7 @@ main()
     await prisma.$disconnect();
   })
   .catch(async (error) => {
-    console.log(error);
+    // console.log(error);
     await prisma.$disconnect();
     process.exit(1);
   });

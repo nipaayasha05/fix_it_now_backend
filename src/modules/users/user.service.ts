@@ -1,9 +1,15 @@
 import bcrypt from "bcryptjs";
-import { RegisterUserPayload, UpdateUserPayload } from "./user.interface";
+import {
+  RegisterUserPayload,
+  UpdateMyInfoPayload,
+  UpdateUserPayload,
+} from "./user.interface";
 import { prisma } from "../../lib/prisma";
 import config from "../../config";
 import APPError from "../../middlewares/appError";
 import httpStatus from "http-status";
+import { UserWhereInput } from "../../../prisma/generated/prisma/models";
+import { Role, UserStatus } from "../../../prisma/generated/prisma/enums";
 
 const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   const { name, email, password, phone, role, status, profileImage } = payload;
@@ -80,13 +86,76 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   return user;
 };
 
-const getAllUsers = async () => {
-  const users = await prisma.user.findMany({
-    omit: {
-      password: true,
+interface IBookingQuery {
+  searchTerm?: string;
+  role?: Role;
+  status?: UserStatus;
+  page?: string;
+  limit?: string;
+}
+
+const getAllUsers = async (
+  query: IBookingQuery = {},
+  page: number,
+  limit: number,
+) => {
+  const andConditions: UserWhereInput[] = [];
+
+  // filtering
+  if (query.role) {
+    andConditions.push({
+      role: query.role,
+      // mode: "insensitive",
+    });
+  }
+
+  if (query.status) {
+    andConditions.push({
+      status: query.status,
+      // mode: "insensitive",
+    });
+  }
+
+  // pagination
+
+  const skip = (page - 1) * limit;
+
+  const whereCondition = {
+    AND: andConditions,
+  };
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where: whereCondition,
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+      omit: {
+        password: true,
+      },
+    }),
+    prisma.user.count({
+      where: whereCondition,
+    }),
+  ]);
+  const totalPages = Math.ceil(total / limit);
+
+  // const users = await prisma.user.findMany({
+  //   omit: {
+  //     password: true,
+  //   },
+  // });
+  return {
+    data: users,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
     },
-  });
-  return users;
+  };
 };
 
 const getMe = async (userId: string) => {
@@ -101,10 +170,12 @@ const getMe = async (userId: string) => {
       technician: true,
     },
   });
-  console.log(user);
+
+  // console.log(user);
   if (!user) {
     throw new APPError(httpStatus.NOT_FOUND, "User not found.");
   }
+
   return user;
 };
 
@@ -167,10 +238,35 @@ const getOverview = async () => {
   };
 };
 
+const updateMyInfo = async (userId: string, payload: UpdateMyInfoPayload) => {
+  // const user = await prisma.user.findUniqueOrThrow({
+  //   where: {
+  //     id: userId,
+  //   },
+  // });
+  const { name, phone, profileImage } = payload;
+
+  const data: UpdateMyInfoPayload = {};
+
+  if (name !== undefined) data.name = name;
+  if (phone !== undefined) data.phone = phone;
+  if (profileImage !== undefined) data.profileImage = profileImage;
+
+  const result = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data,
+  });
+  // console.log("UPDATED USER FROM DB:", result);
+  return result;
+};
+
 export const userService = {
   registerUserIntoDB,
   getAllUsers,
   getMe,
   updateUser,
+  updateMyInfo,
   getOverview,
 };

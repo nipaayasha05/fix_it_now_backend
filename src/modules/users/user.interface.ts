@@ -13,3 +13,10 @@ export interface RegisterUserPayload {
 export interface UpdateUserPayload {
   status?: UserStatus;
 }
+
+export interface UpdateMyInfoPayload {
+  name?: string;
+
+  phone?: string;
+  profileImage?: string | null;
+}

@@ -42,8 +42,10 @@ const updateService = catchAsync(
 
 const getAllServices = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
     const query = req.query;
-    const result = await serviceService.getAllServices(query);
+    const result = await serviceService.getAllServices(query, page, limit);
 
     sendResponse(res, {
       success: true,
